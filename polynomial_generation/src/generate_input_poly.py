@@ -10,21 +10,18 @@ import os
 # In[2]:
 
 if len(sys.argv) != 2:
-    print("Usage: ./script <input.in>")
-    print("input.in must be in the form of A1B2_A1B2, A1_B2, ...")
+    print("Usage: ./script <input>")
+    print("input must be in the form of A1B2_A1B2, A1_B2, ...")
+    print("The script will create a file named input.in, e.g. A1B2_A1B2.in")
     print("If the molecule has virtual sites, such as lone pairs, use the letter Z")
     sys.exit()
 else:
-    name = sys.argv[1]
+    molec = sys.argv[1]
 
 
 # In[8]:
 
-# This should be the commandline argument
-#name = "A1B2Z2_D1E2.in"
-#name = "A1B2_A1B2.in"
-molec = os.path.splitext(name)[0]
-f = open(name, 'w')
+f = open(molec+".in", 'w')
 mon1 = molec.split('_')[0]
 mon2 = molec.split('_')[1]
 f.write('add_molecule[\'' + mon1 + '\']\n')
