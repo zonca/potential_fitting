@@ -10,17 +10,17 @@ LIBS = -lnetcdf -lgsl -lgslcblas -L/opt/intel/lib/intel64 -L/opt/intel/mkl/lib/i
 all: test-x3b fit-x3b-h2o-ion-v1 eval-3b-pot
 
 eval-3b-pot: eval-3b-pot.o $(COMMON)
-	$(CXX) -DFLUORIDE -o eval-3b-pot eval-3b-pot.cpp $(CXXFLAGS) $(LIBS) $(COMMON)
+	$(CXX)  -o eval-3b-pot eval-3b-pot.cpp $(CXXFLAGS) $(LIBS) $(COMMON)
 	mkdir -p ../bin
 	mv eval-3b-pot ../bin
 
 test-x3b: test-x3b.o $(COMMON)
-	$(CXX) -DFLUORIDE -o test-x3b test-x3b.cpp $(CXXFLAGS) $(LIBS) $(COMMON) 
+	$(CXX)  -o test-x3b test-x3b.cpp $(CXXFLAGS) $(LIBS) $(COMMON) 
 	mkdir -p ../bin
 	mv test-x3b ../bin
 
 fit-x3b-h2o-ion-v1: fit-x3b-h2o-ion-v1.o $(COMMON)
-	$(CXX) -DFLUORIDE -o fit-x3b-h2o-ion-v1 fit-x3b-h2o-ion-v1.cpp $(CXXFLAGS) $(LIBS) $(COMMON) 
+	$(CXX)  -o fit-x3b-h2o-ion-v1 fit-x3b-h2o-ion-v1.cpp $(CXXFLAGS) $(LIBS) $(COMMON) 
 	mkdir -p ../bin
 	mv fit-x3b-h2o-ion-v1 ../bin
 
