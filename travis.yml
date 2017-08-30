@@ -1,0 +1,4 @@
+language: bash
+
+script:
+    - cd polynomial_generation/tests/1B; bash run_test.sh
