@@ -1,8 +1,6 @@
 dist: trusty
 
-language: perl
-perl:
-    - "5.24"
+language: bash
 
 script:
     - cd polynomial_generation/tests/1B; bash run_test.sh
