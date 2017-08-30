@@ -7,7 +7,7 @@ diff bf4.log bf4_expected/bf4.log
 if [ $? -ne 0 ]
 then
     echo "bf4 failed!!"
-    exit
+    exit $?
 else
     echo "bf4 passed!"
     rm *log poly* vars.cpp
@@ -20,7 +20,7 @@ diff pdh3.log pdh3_expected/pdh3.log
 if [ $? -ne 0 ]
 then
     echo "pdh3 failed!!"
-    exit
+    exit $?
 else
     echo "pdh3 passed!"
     rm *log poly* vars.cpp
