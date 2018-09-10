@@ -1,9 +1,6 @@
-
-
-job_file = "job_dir/job_1.py"
-
-
 import subprocess
+
+job_file = sys.argv[1]
 
 with open(job_file) as f:
     job_string = f.read()
