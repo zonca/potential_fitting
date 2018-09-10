@@ -45,7 +45,7 @@ def execute_job():
         success = False
         print("Iterations failed to Converge")
 
-    with open("job_{format}.out".format(job_id), "w") as out_file:
+    with open("/root/shared/results/job_{format}.out".format(job_id), "w") as out_file:
         out_file.write("Job: {format}\n".format(job_id))
         if success:
             out_file.write("Energy: {format}".format(energy))
