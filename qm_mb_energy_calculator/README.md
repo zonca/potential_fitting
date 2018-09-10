@@ -43,3 +43,61 @@ settings file: a file ending in .ini containing all the settings needed to gener
 database name: the name of the file the database is stored in. ".db" will be added to the end if the name does not already end in ".db".
 
 training set file: the name of the file where the training set should be generated. Should end in ".xyz".
+
+# Interface with BOINC
+
+## Setup
+
+In order to interface with BOINC we need to SSH into the BOINC server and then get a terminal inside the Docker container of the server with the `boinc_connect_server.sh` script.
+
+The scripts are already available at:
+
+    /root/project/potential_fitting/qm_mb_energy_calculator/src
+
+Currently the only database supported is sqlite, so we need to either copy it to the current folder and rename it `configurations.db` or create a simple one with a few trimers with the `0_initialize_db.sh` script.
+
+Make also sure that the Miniconda environment is active, `which python` should return `/root/miniconda3/bin/python`. Note that there are 2 Python installation. Miniconda is used for the scripts we wrote, but the script used to launch BOINC job uses the Python 2 installation of the OS directly.
+
+## Job script creation
+
+The `psi4` container, starting from version `0.0.4` has the capability of executing any complete Python script received as an input string from BOINC.
+We first execute the script to export the configurations that need to be computed from the database and for each create a job script that computes the energy, see `1_make_job_files.sh`.
+
+This creates a set of Python scripts in the `job_dir` folder ready to be executed on machines that have `psi4`.
+
+## BOINC job submission
+
+Now we want to read the Python job scripts and for each of them create a BOINC job with the full script turned into a string as an input, this is performed by the `2_launch_job.py` script.
+
+It takes as an argument the path to the file to be executed, i.e.:
+
+    python 2_launch_job.py job_dir/job_1.py
+
+Once the job is submitted, the clients (just `spinoza` for now) will download the Docker image, execute it, then execute the Python code received as input. If we change the Python code, we do not need to modify the Docker image.
+
+## Add BOINC results back to the database
+
+Once jobs are completed, the results are available inside the BOINC docker server organized by date under:
+
+    /results/boinc2docker/
+
+We can launch the last script `3_ingest_results.sh` to add those results to the database, for example:
+
+    bash 3_ingest_results.sh /results/boinc2docker/2018-09-10/boinc2docker_18144_1536602029.379713_0_r686785835_0.tgz
+
+The results will be unpacked and the Energy added to the database, see:
+
+```
+root@boincserver:~/project/potential_fitting/qm_mb_energy_calculator/src# sqlite3 configurations.db 
+SQLite version 3.24.0 2018-06-04 19:24:41
+Enter ".help" for usage hints.
+sqlite> .tables
+Atoms         Energies      Jobs          Molecules   
+Calculations  Fragments     Models      
+sqlite> select * from Energies;
+1|1|0|
+1|2|1|-74.963091221456
+1|3|2|
+1|4|3|
+1|5|4|
+```
