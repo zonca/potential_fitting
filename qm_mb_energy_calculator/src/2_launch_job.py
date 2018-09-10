@@ -13,8 +13,8 @@ subprocess.run([
     "--rsc_disk_bound",
     "5000000000",
     "--rsc_memory_bound",
-    "6000000000",
-    "paesanilab/psi4:0.0.4",
+    "6000000000", # request 6GB of RAM
+    "paesanilab/psi4:0.0.4", # version of the psi4 container, NEVER use latest
     "python",
     "run_pyscript.py",
     job_string
